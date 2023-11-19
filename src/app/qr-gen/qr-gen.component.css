@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  width: 80vw;
+  height: auto;
+  padding-top: 7%;
+  padding-left: 7%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}/*# sourceMappingURL=qr-gen.component.css.map */

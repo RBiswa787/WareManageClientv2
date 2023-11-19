@@ -1,0 +1,23 @@
+<div class="container">
+    <div class="image-holder">
+        <img src="../../assets/warehouse.jpg" alt="">
+    </div>
+    <div class="form-holder">
+        <form  [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+            <label  class="form-label">Username</label>
+            <input type="text" class="form-control"  placeholder="Type your username" formControlName="username">
+            <label  class="form-label">Password</label>
+            <input type="password" class="form-control"  placeholder="Type your password" formControlName="password">
+            <label  class="form-label">Role</label>
+            <select class="form-select" aria-label="Default select example" formControlName="role">
+                <option selected>Select Role</option>
+                <option value="warehouse-manager">Warehouse Manager</option>
+                <option value="inventory-manager">Inventory Manager</option>
+                <option value="staff">Staff</option>
+                <option value="supplier">Supplier</option>
+                <option value="vendor">Vendor</option>
+              </select>
+            <button type="submit" class="btn btn-warning">Register</button>
+        </form>
+    </div>
+</div>

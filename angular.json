@@ -27,7 +27,8 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/netlify.toml"
             ],
             "styles": [
               "src/styles.scss"
@@ -100,5 +101,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "c8d3d1ca-e5b9-4d18-8704-0b83147b042d"
   }
 }

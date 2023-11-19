@@ -1,0 +1,123 @@
+<div class="container">
+    <app-layout></app-layout>
+    
+    <div class="order">
+        <span class="title">Suppliers</span>
+        <div id="supply-holder" class="holder" >
+          
+          <button type="button" class="btn btn-outline-warning" *ngFor = "let supplier of suppliers.value" (click) = "populateModal(supplier)" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick = "window.localStorage.setItem('cart',JSON.stringify([]))">{{supplier}}</button>
+        </div>
+        
+        
+    </div>
+    <div class="orders">
+        <span class="title">Purchase Orders</span>
+        <div id="orders-holder" class="orders-holder">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">OrderID</th>
+                <th scope="col">Order Status</th>
+                <th scope="col">View Order</th>
+                <th scope="col">Update Status</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let order of orders.value">
+              <tr *ngIf="order.partnerType == 'supplier' && order.orderStatus != 'received' && order.orderStatus != 'rejected' && order.orderStatus != 'cancelled'">
+                <td>{{order.orderId}}</td>
+                <td>{{order.orderStatus.charAt(0).toUpperCase() + order.orderStatus.slice(1)}}</td>
+                <td>
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderModal" (click)="currentOrder(order)">View</button>
+                </td>
+                <td *ngIf="order.orderStatus == 'placed' || order.orderStatus == 'confirmed'">
+                  <button type="button" class="btn btn-outline-warning" (click)="cancelOrder(order)">Cancel</button>
+                </td>
+                <td *ngIf="order.orderStatus == 'shipped'">
+                  <button type="button" class="btn btn-outline-success" (click)="receiveOrder(order)">Received</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <div class="order_holder">
+      <span class="title">Sales Orders</span>
+      <div id="orders-holder" class="orders-holder">
+          <table class="table">
+              <thead>
+                <tr>
+                  <th  scope="col">Order Id</th>
+                  <th  scope="col">View</th>
+                  <th  scope="col">Confirm</th>
+                  <th  scope="col">Reject</th>
+                </tr>
+              </thead>
+              <tbody *ngFor="let order of orders.value">
+                <tr *ngIf="order.partnerType == 'vendor' && (order.orderStatus == 'placed' || order.orderStatus == 'confirmed')" >
+                  <td>{{order.orderId}}</td>
+                  <td><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderModal" (click)="currentOrder(order)">View</button></td>
+                  <td *ngIf="order.orderStatus == 'placed'"><button type="button" class="btn btn-outline-success" (click)="acceptOrder(order)" >Accept</button></td>
+                  <td *ngIf="order.orderStatus == 'confirmed'"><button disabled type="button" class="btn btn-info" (click)="dispatchOrder(order)" >Yet to Dispatch</button></td>
+                  <td><button type="button" class="btn btn-outline-danger" (click)="rejectOrder(order)">Reject</button></td>
+              </tr>
+              </tbody>
+              </table>
+      </div>
+  </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Place Order</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="modal-body" class="modal-body">
+            <div class="item-holder" *ngFor = "let supply of supplies.value">
+              <label class="form-label">{{supply.title}}</label>
+             <input type="number" #qtyInput class="form-control"  placeholder="Qty." (change)="updateCart(supply.sku,qtyInput.value,supply.title)">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" onClick = "window.localStorage.setItem('cart',JSON.stringify([]))">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="confirmOrder()">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="orderModalLabel">Order View</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="modal-body" class="modal-body">
+            <label class="form-label"><span style="font-weight: 500;">OrderID :</span> {{order.value.orderId}}</label><br>
+            <label class="form-label"><span style="font-weight: 500;">PartnerID :</span> {{order.value.partner}}</label>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="font-weight: 500;" scope="col">SKU</th>
+                  <th style="font-weight: 500;" scope="col">Title</th>
+                  <th style="font-weight: 500;" scope="col">Qty</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of this.order.value.items">
+                  <td>{{item.sku}}</td>
+                  <td>{{item.title}}</td>
+                  <td>{{item.qty}}</td>
+                </tr>
+              </tbody>
+              </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-warning" style="margin-top:5%" (click)="report()">Generate Report</button>
+</div>
+

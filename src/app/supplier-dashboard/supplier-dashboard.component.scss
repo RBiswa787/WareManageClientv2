@@ -1,0 +1,86 @@
+.container{
+    display: flex;
+    width: 80vw;
+    min-height: 80vh;
+    margin-top: 2%;
+    justify-content: space-around;
+    align-items: space-around;
+
+    .sku_holder{
+        display: flex;
+        width: 45%;
+        height: auto;
+        min-height: 80vh;
+        border-radius: 5px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        padding: 2%;
+        flex-direction: column;
+
+        .title{
+            display: flex;
+            width: 90%;
+            height: auto;
+            padding-top:2%;
+            font-family:  "Ubuntu";
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #fcb454;
+        }
+        form{
+            display: flex;
+            gap: 1em;
+            height: 3em;
+            justify-content: space-around;
+            align-items: space-around;
+            margin-top: 2%;
+            button{
+                display: flex;
+                height: 100%;
+                aspect-ratio: 1/1;
+                justify-content: center;
+                align-items: center;
+                font-size: 1.2em;
+                font-weight: bold;
+                color: white;
+            }
+        }
+        .supply-holder{
+            display: flex;
+            width: 95%;
+            height:auto;
+            padding: 2%;
+            justify-content: space-around;
+            align-items: space-around;
+            flex-direction: column;
+            gap: 1em;
+            margin-top: 3%;
+        }
+    }
+    .order_holder{
+        display: flex;
+        width: 45%;
+        height: auto;
+        min-height: 80vh;
+        border-radius: 5px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        padding: 2%;
+        flex-direction:  column;
+        .title{
+            display: flex;
+            width: 90%;
+            height: auto;
+            padding-top:2%;
+            font-family:  "Ubuntu";
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #fcb454;
+        }
+
+        .orders-holder{
+            display: flex;
+            gap: 1em;
+            flex-direction: column;
+        }
+
+    }
+}

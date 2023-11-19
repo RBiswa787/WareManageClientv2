@@ -1,0 +1,107 @@
+<div id="contain" class="container">
+  <div class="header">
+    <input type="text" class="form-control" placeholder="Search with keywords">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick = "window.localStorage.setItem('vendor_cart',JSON.stringify([]))">View Cart</button>
+  </div>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">SKU</th>
+            <th scope="col">Title</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody id="tbody" *ngFor="let item of sku">
+            <tr *ngIf="item['qty'] > 0">
+                <td>{{item['sku']}}</td>
+                <td>{{item['title']}}</td>
+                <td>{{item['qty']}}</td>
+                <td *ngIf="!isInCart(item['sku'])"><button type="button" class="btn btn-outline-success" (click)="addToCart(item)">Add</button></td>
+                <td *ngIf="isInCart(item['sku'])"><button type="button" class="btn btn-outline-danger" (click)="removeFromCart(item['sku'])">Remove</button></td>
+              </tr>
+        </tbody>
+      </table>
+      <div class="orders">
+        <span class="title">Purchase Orders</span>
+        <div id="orders-holder" class="orders-holder">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">OrderID</th>
+                <th scope="col">Order Status</th>
+                <th scope="col">View Order</th>
+                <th scope="col">Update Status</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let order of orders.value">
+              <tr *ngIf="order.partner == this.vendor.value && order.orderStatus != 'received' && order.orderStatus != 'rejected' && order.orderStatus != 'cancelled'">
+                <td>{{order.orderId}}</td>
+                <td>{{order.orderStatus.charAt(0).toUpperCase() + order.orderStatus.slice(1)}}</td>
+                <td>
+                  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderModal" (click)="currentOrder(order)">View</button>
+                </td>
+                <td *ngIf="order.orderStatus == 'placed' || order.orderStatus == 'confirmed'">
+                  <button type="button" class="btn btn-outline-warning" (click)="cancelOrder(order)">Cancel</button>
+                </td>
+                <td *ngIf="order.orderStatus == 'shipped'">
+                  <button type="button" class="btn btn-outline-success" (click)="receiveOrder(order)">Received</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Place Order</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="modal-body" class="modal-body">
+              <div class="item-holder" *ngFor = "let supply of cart.value">
+                <label class="form-label">{{supply.title}}</label>
+               <input type="number" #qtyInput class="form-control"  placeholder="Qty." (change)="updateCart(supply.sku,qtyInput.value,supply.title)">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" onClick = "window.localStorage.setItem('vendor_cart',JSON.stringify([]))">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="confirmOrder()">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="orderModalLabel">Order View</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="modal-body" class="modal-body">
+              <label class="form-label"><span style="font-weight: 500;">OrderID :</span> {{order.value.orderId}}</label><br>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="font-weight: 500;" scope="col">SKU</th>
+                    <th style="font-weight: 500;" scope="col">Title</th>
+                    <th style="font-weight: 500;" scope="col">Qty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of this.order.value.items">
+                    <td>{{item.sku}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.qty}}</td>
+                  </tr>
+                </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>

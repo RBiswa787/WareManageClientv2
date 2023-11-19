@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  width: 80vw;
+  min-height: 80vh;
+  margin-top: 2%;
+  align-items: space-around;
+  flex-direction: column;
+  gap: 1em;
+}
+.container .checkin-holder {
+  display: flex;
+  width: 70vw;
+  height: auto;
+  min-height: 30vh;
+  padding: 2%;
+  flex-direction: column;
+  gap: 1em;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.container .checkin-holder .title {
+  font-family: "Ubuntu";
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #fcb454;
+}
+
+#side-scan {
+  display: flex;
+  justify-content: center;
+}/*# sourceMappingURL=staff-dashboard.component.css.map */

@@ -1,0 +1,32 @@
+.container{
+    display: flex;
+    width: 80vw;
+    height: auto;
+    padding: 2%;
+    padding-left: 7%;
+    flex-direction: column;
+    
+
+    .pending{
+        display: flex;
+        width: 45%;
+        height: auto;
+      border-radius: 5px;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        flex-direction: column;
+        gap: 0.9em;
+        padding-bottom: 2%;
+        margin-top: 5%;
+        .title{
+            display: flex;
+            width: 80%;
+            height: auto;
+            font-family:  "Ubuntu";
+            font-weight: bold;
+            color: #fcb454;
+            font-size: 0.9em;
+            padding-left:5%;
+            padding-top: 2%;
+        }
+    }
+}

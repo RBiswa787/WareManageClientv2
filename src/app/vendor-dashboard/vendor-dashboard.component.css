@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  width: 80vw;
+  min-height: 80vh;
+  margin-top: 2%;
+  padding: 2%;
+  align-items: center;
+  flex-direction: column;
+  gap: 1em;
+  overflow-y: auto;
+}
+.container .header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 1em;
+}
+.container .header input {
+  display: flex;
+  width: 60%;
+}
+.container .header button {
+  display: flex;
+  width: 15%;
+  justify-content: center;
+}
+.container .orders {
+  display: flex;
+  width: 70vw;
+  min-height: 20vh;
+  padding: 2%;
+  padding-left: 3%;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  margin-top: 3%;
+  flex-direction: column;
+}
+.container .orders .title {
+  font-family: "Ubuntu";
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #fcb454;
+}
+.container .orders .orders-holder {
+  display: flex;
+  width: 95%;
+  height: auto;
+  margin-top: 2%;
+  padding: 2%;
+  gap: 1em;
+  flex-direction: column;
+}/*# sourceMappingURL=vendor-dashboard.component.css.map */

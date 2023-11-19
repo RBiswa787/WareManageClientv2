@@ -1,0 +1,48 @@
+.holder {
+  display: flex;
+  max-width: 200px;
+  height: 70vh;
+  flex-direction: column;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  gap: 1em;
+  align-items: center;
+  padding-top: 3%;
+}
+.holder #title {
+  display: flex;
+  width: 100%;
+  height: 20px;
+  margin-top: 5%;
+  justify-content: center;
+  align-items: center;
+  font-family: "Ubuntu";
+  font-size: 1.2em;
+}
+.holder zxing-scanner {
+  display: flex;
+  width: 100%;
+  aspect-ratio: 1/1;
+  margin-top: 5%;
+}
+.holder #wrong {
+  display: flex;
+  width: 100%;
+  height: 40px;
+  padding: 1%;
+  color: red;
+  justify-content: center;
+  align-items: center;
+  font-family: "Ubuntu";
+  font-size: 1em;
+}
+.holder #scan {
+  display: flex;
+  width: 80%;
+  height: 40px;
+  padding: 1%;
+  justify-content: center;
+  align-items: center;
+}
+.holder button {
+  margin-bottom: 3%;
+}/*# sourceMappingURL=qr-scan.component.css.map */

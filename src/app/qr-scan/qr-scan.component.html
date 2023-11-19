@@ -1,0 +1,15 @@
+<!-- <zxing-scanner  [(device)]="currentDevice" (scanSuccess)="onCodeResult($event)"
+    [formats]="formatsEnabled" [tryHarder]="tryHarder" (permissionResponse)="onHasPermission($event)"
+    (camerasFound)="onCamerasFound($event)" ></zxing-scanner>
+    <strong>{{ qrResultString }}</strong> -->
+<div class="holder">
+    <span id="title">Scan Code</span>
+    <zxing-scanner  [(device)]="currentDevice" (scanSuccess)="onCodeResult($event)"
+    [formats]="formatsEnabled" [tryHarder]="tryHarder" (permissionResponse)="onHasPermission($event)"
+    (camerasFound)="onCamerasFound($event)" ></zxing-scanner>
+    <span id="scan">
+        <strong>{{ qrResultString }}</strong>
+    </span>
+    <div id="wrong" class="wrong">Wrong SKU</div>
+    <button type="button" id="proceed" class="btn btn-success" (click)="updateScanString()">Proceed</button>
+</div>

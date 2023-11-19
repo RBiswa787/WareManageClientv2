@@ -1,0 +1,9 @@
+export interface BarData{
+
+            label: string,
+            data: number[],
+            backgroundColor: string[],
+            borderColor: string[],
+            borderWidth: number
+        
+}

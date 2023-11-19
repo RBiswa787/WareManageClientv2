@@ -1,0 +1,75 @@
+<div class="container">
+    <div id="checkin-holder" class="checkin-holder">
+        <span class="title">CheckIn</span>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">SKU</th>
+                <th scope="col">Assigned Location</th>
+                <th scope="col">Generate QR</th>
+                <th scope="col">Check In</th>
+              </tr>
+            </thead>
+            <tbody id="tbody" *ngFor="let item of checkin_items.value">
+                <tr>
+                    <td>{{item['sku']}}</td>
+                    <td>{{item['location']}}</td>
+                    <td>
+                    <button type="button" class="btn btn-outline-warning" (click)="generateQR(item['sku'])">Generate</button>
+                    </td>
+                    <td>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" (click)="checkIn(item['sku'],item['location'],item['qty'],item['title'])">Check In</button>
+                </td>
+                  </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <div id="checkin-holder" class="checkin-holder">
+      <span class="title">CheckOut</span>
+      <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item" *ngFor="let order of checkout_items.value | keyvalue">
+          <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+             <span style="font-weight: 500;">OrderID</span> : {{order.key}}
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+            <div class="accordion-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="font-weight: 500;" scope="col">SKU</th>
+                    <th style="font-weight: 500;" scope="col">Location</th>
+                    <th style="font-weight: 500;" scope="col">Pick Qty.</th>
+                    <th  style="font-weight: 500;"scope="col">Check Out</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor = "let item of order.value">
+                    <td>{{item.sku}}</td>
+                    <td>{{item.location}}</td>
+                    <td>{{item.qty}}</td>
+                    <td *ngIf="!item.isCheckedOut"><button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" (click)="checkOut(item['sku'],item['location'],item['qty'],item['title'],order.key)">Check Out</button></td>
+                    <td *ngIf="item.isCheckedOut"><button disabled  type="button" class="btn btn-outline-success" >Complete</button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button *ngIf="isReadyToShip(order.key)" type="button" class="btn btn-info" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" (click)="shipOrder(order.key)">Ready to Ship</button>
+              <button *ngIf="isReadyToShip(order.key)" type="button" class="btn btn-outline-warning" (click)="generateQR(order.key)" style="margin-left: 3%">Generate</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+ 
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Scan</h5>
+     
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div id="side-scan" class="offcanvas-body">
+      <app-qr-scan></app-qr-scan>
+    </div>
+</div>

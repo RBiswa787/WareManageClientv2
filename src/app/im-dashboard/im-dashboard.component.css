@@ -1,0 +1,89 @@
+.container {
+  display: flex;
+  width: 80vw;
+  height: auto;
+  padding: 2%;
+  padding-left: 7%;
+  flex-direction: column;
+}
+.container button {
+  max-width: 200px;
+}
+.container .order {
+  display: flex;
+  width: 70vw;
+  min-height: 20vh;
+  padding: 2%;
+  padding-left: 3%;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  margin-top: 3%;
+  flex-direction: column;
+}
+.container .order .title {
+  font-family: "Ubuntu";
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #fcb454;
+}
+.container .order .holder {
+  display: flex;
+  width: 95%;
+  height: auto;
+  margin-top: 2%;
+  padding: 2%;
+  gap: 1em;
+}
+.container .orders {
+  display: flex;
+  width: 70vw;
+  min-height: 20vh;
+  padding: 2%;
+  padding-left: 3%;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  margin-top: 3%;
+  flex-direction: column;
+}
+.container .orders .title {
+  font-family: "Ubuntu";
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #fcb454;
+}
+.container .orders .orders-holder {
+  display: flex;
+  width: 95%;
+  height: auto;
+  margin-top: 2%;
+  padding: 2%;
+  gap: 1em;
+  flex-direction: column;
+}
+.container .order_holder {
+  display: flex;
+  width: 70vw;
+  min-height: 20vh;
+  border-radius: 5px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding: 2%;
+  padding-left: 3%;
+  flex-direction: column;
+}
+.container .order_holder .title {
+  display: flex;
+  width: 90%;
+  height: auto;
+  padding-top: 2%;
+  font-family: "Ubuntu";
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #fcb454;
+}
+.container .order_holder .orders-holder {
+  display: flex;
+  width: 95%;
+  height: auto;
+  margin-top: 2%;
+  padding: 2%;
+  gap: 1em;
+  flex-direction: column;
+}/*# sourceMappingURL=im-dashboard.component.css.map */
