@@ -18,7 +18,7 @@
                     <button type="button" class="btn btn-outline-warning" (click)="generateQR(item['sku'])">Generate</button>
                     </td>
                     <td>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" (click)="checkIn(item['sku'],item['location'],item['qty'],item['title'])">Check In</button>
+                    <button type="button" class="btn btn-primary"  (click)="checkIn(item['sku'],item['location'],item['qty'],item['title'])">Check In</button>
                 </td>
                   </tr>
             </tbody>

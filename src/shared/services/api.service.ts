@@ -81,7 +81,7 @@ export class ApiService {
     return this.inventory.value[location];
   }
 
-  checkIfEmpty(location: string){
+  checkIfEmpty(location: string) : boolean{
     for(let i = 0; i < this.layout.value.bin;i++){
       let item = this.getInventoryItem(location + "-"+(i+1));
       if(item.isOccupied){
@@ -91,9 +91,8 @@ export class ApiService {
     return false;
   }
 
-  updateScanString(value: string){
+  updateScanString(value: string) : void{
     this.scanString = value;
-    console.log(value);
   }
 
   signIn(username: string, password: string) : Observable<UserSignInResponse>{
@@ -108,23 +107,23 @@ export class ApiService {
     return this.http.get<string[]>(BASE_URL + '/User/unverified');
   }
 
-  onboard(username: string){
-    return this.http.put(BASE_URL + '/User/onboard',{username:username});
+  onboard(username: string) : Observable<any>{
+    return this.http.put<any>(BASE_URL + '/User/onboard',{username:username});
   }
 
-  addSupply(sku: string, title: string, supplier: string){
-    return this.http.post(BASE_URL + "/Supplies",{sku:sku,title:title,supplier:supplier});
+  addSupply(sku: string, title: string, supplier: string) : Observable<any>{
+    return this.http.post<any>(BASE_URL + "/Supplies",{sku:sku,title:title,supplier:supplier});
   }
 
   getAllSupplies(supplier: string) : Observable<SupplyResponse[]>{
     return this.http.get<SupplyResponse[]>(BASE_URL + "/Supplies/api/supplies/"+supplier);
   }
 
-  deleteSupply(sku:string){
-    return this.http.delete(BASE_URL + "/Supplies/"+sku);
+  deleteSupply(sku:string) : Observable<any>{
+    return this.http.delete<any>(BASE_URL + "/Supplies/"+sku);
   }
 
-  getAllSupplier(){
+  getAllSupplier() : void{
     this.http.get<SupplyResponse[]>(BASE_URL + '/Supplies').subscribe(
       (response) => {
         const uniqueSuppliers = new Set<string>();
@@ -137,11 +136,11 @@ export class ApiService {
     );
   }
 
-  placeOrder(partner: string, items: any, partnerType: string){
-    return this.http.post(BASE_URL + '/Order',{orderId: this.generateRandomString(),partner:partner,items: items,orderStatus:"placed",partnerType: partnerType});
-  }
+  placeOrder(partner: string, items: any, partnerType: string) : Observable<any>{
+    return this.http.post<any>(BASE_URL + '/Order',{orderId: this.generateRandomString(),partner:partner,items: items,orderStatus:"placed",partnerType: partnerType});
+  } 
 
-  generateRandomString() {
+  generateRandomString() : string{
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     for (let i = 0; i < 6; i++) {
@@ -150,7 +149,7 @@ export class ApiService {
     return result;
   }
 
-  getAllOrder(){
+  getAllOrder() : Observable<OrderResponse[]>{
    return this.http.get<OrderResponse[]>(BASE_URL + "/Order");
   }
 
@@ -158,32 +157,32 @@ export class ApiService {
     return this.http.get(BASE_URL + '/Order/'+orderid+"/"+status);
   }
 
-  getAllCheckIn(){
+  getAllCheckIn() : Observable<CheckIn[]>{
     return this.http.get<CheckIn[]>(BASE_URL + '/CheckIn');
   }
 
-  updateInventory(location: string, sku: string, qty: string, title: string){
-    return this.http.post(BASE_URL + '/Inventory/update', {location:location, sku:sku,qty:parseInt(qty),title: title});
+  updateInventory(location: string, sku: string, qty: string, title: string) : Observable<any>{
+    return this.http.post<any>(BASE_URL + '/Inventory/update', {location:location, sku:sku,qty:parseInt(qty),title: title});
   }
 
-  deleteFromCheckIn(location: string){
-    return this.http.delete(BASE_URL + '/CheckIn/' + location);
+  deleteFromCheckIn(location: string) : Observable<any>{
+    return this.http.delete<any>(BASE_URL + '/CheckIn/' + location);
   }
 
-  getAllCheckOut(){
+  getAllCheckOut() : Observable<CheckOut[]>{
     return this.http.get<CheckOut[]>(BASE_URL + '/CheckOut');
   }
 
-  checkOutItem(sku: string, orderid: string){
+  checkOutItem(sku: string, orderid: string) : Observable<any>{
 
     return this.http.post(BASE_URL + '/CheckOut/update',{sku: sku,orderId:orderid});
   }
 
-  updateInventoryAfterCheckout(location: string, qty: string){
+  updateInventoryAfterCheckout(location: string, qty: string) : Observable<any>{
     return this.http.post(BASE_URL + '/Inventory/deduct', {location : location, qty: parseInt(qty)});
   }
 
-  removeFromCheckout(orderid: string){
+  removeFromCheckout(orderid: string) : Observable<any>{
     return this.http.delete(BASE_URL + '/CheckOut/'+orderid);
   }
 
