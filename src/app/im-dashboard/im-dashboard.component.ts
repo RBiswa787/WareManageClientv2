@@ -28,6 +28,9 @@ export class ImDashboardComponent {
   selectedSupplier = '';
   constructor(private apiService: ApiService){}
   ngOnInit(){
+    if(window.localStorage.getItem("role") != "inventory-manager"){
+      window.location.href = "./";
+    }
     console.log("before Init");
     const HOLDER = document.getElementById("supply-holder");
     this.apiService.uniqueSuppliers.subscribe(

@@ -19,6 +19,9 @@ export class StaffDashboardComponent {
   constructor(private apiService: ApiService,private cdRef: ChangeDetectorRef){}
 
   ngOnInit(){
+    if(window.localStorage.getItem("role") != "staff"){
+      window.location.href = "./";
+    }
     this.apiService.getAllCheckIn().subscribe(
       data => {
        this.checkin_items.next(data);

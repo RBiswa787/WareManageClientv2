@@ -10,6 +10,9 @@ export class DashboardComponent {
    constructor(private apiService: ApiService){}
 
    ngOnInit(){
+    if(window.localStorage.getItem("role") != "warehouse_manager"){
+      window.location.href = "./";
+    }
     const PENDING = document.getElementById("pending");
     this.apiService.getUnverified().subscribe(
       (response) => {

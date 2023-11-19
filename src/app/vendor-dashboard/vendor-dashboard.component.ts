@@ -30,6 +30,9 @@ export class VendorDashboardComponent {
   });
   cart = new BehaviorSubject<CartItem[]>([]);
   ngOnInit(){
+    if(window.localStorage.getItem("role") != "vendor"){
+      window.location.href = "./";
+    }
     this.apiService.originalInventory.subscribe(
       data => {
         this.sku = data;

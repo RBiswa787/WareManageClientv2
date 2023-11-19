@@ -30,6 +30,9 @@ export class SupplierDashboardComponent {
   }
 
   ngOnInit(){
+    if(window.localStorage.getItem("role") != "supplier"){
+      window.location.href = "./";
+    }
     this.supplierID.next(window.localStorage.getItem("username")!);
     this.supplyForm = this.fb.group({
       sku: "",
