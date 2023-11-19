@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +25,7 @@ import { OrderViewComponent } from './order-view/order-view.component';
 import { ReportComponent } from './report/report.component';
 import { ChartCompoComponent } from './chart-compo/chart-compo.component';
 import { ChartCompVendorComponent } from './chart-comp-vendor/chart-comp-vendor.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 
 @NgModule({
@@ -55,7 +56,13 @@ import { ChartCompVendorComponent } from './chart-comp-vendor/chart-comp-vendor.
     ZXingScannerModule,
     FormsModule,
     ReactiveFormsModule,
-    QrCodeModule
+    QrCodeModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
