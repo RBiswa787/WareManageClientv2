@@ -55,7 +55,7 @@
                   </tr>
                 </tbody>
               </table>
-              <button *ngIf="isReadyToShip(order.key)" type="button" class="btn btn-info"  (click)="shipOrder(order.key)">Ready to Ship</button>
+              <button *ngIf="isReadyToShip(order.key)" type="button" class="btn btn-info"  (click)="shipOrder(order.key)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Ready to Ship</button>
               <button *ngIf="isReadyToShip(order.key)" type="button" class="btn btn-outline-warning" (click)="generateQR(order.key)" style="margin-left: 3%">Generate</button>
             </div>
           </div>
