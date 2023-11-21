@@ -247,6 +247,7 @@ export class LayoutComponent {
     const EMPTY = document.createElement("div");
     EMPTY.style.display = "flex";
     EMPTY.style.height = "60%";
+    EMPTY.style.minHeight = "25px";
     EMPTY.style.aspectRatio = "1/1";
     EMPTY.style.borderRadius = "5px";
     EMPTY.style.border = "2px solid #fcb454";
@@ -260,6 +261,7 @@ export class LayoutComponent {
     const FILLED = document.createElement("div");
     FILLED.style.display = "flex";
     FILLED.style.height = "60%";
+    FILLED.style.minHeight = "25px";
     FILLED.style.aspectRatio = "1/1";
     FILLED.style.borderRadius = "5px";
     FILLED.style.border = "2px solid #fcb454";
@@ -273,11 +275,13 @@ export class LayoutComponent {
     const LOW_INV = document.createElement("div");
     LOW_INV.style.display = "flex";
     LOW_INV.style.height = "60%";
+    LOW_INV.style.minHeight = "25px";
     LOW_INV.style.aspectRatio = "1/1";
     LOW_INV.style.borderRadius = "5px";
     LOW_INV.style.border = "2px solid red";
     LOW_INV.style.color = "red";
     LOW_INV.style.justifyContent = "center";
+    LOW_INV.style.alignItems = "center";
     LOW_INV.style.fontWeight = "bold";
     LOW_INV.innerText = "!";
 
@@ -289,6 +293,7 @@ export class LayoutComponent {
     const BOOKED_INV = document.createElement("div");
     BOOKED_INV.style.display = "flex";
     BOOKED_INV.style.height = "60%";
+    BOOKED_INV.style.minHeight = "25px";
     BOOKED_INV.style.aspectRatio = "1/1";
     BOOKED_INV.style.borderRadius = "5px";
     BOOKED_INV.style.border = "2px solid grey";
