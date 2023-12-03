@@ -10,13 +10,13 @@
 
     .checkin-holder{
         display: flex;
-        width: 90vw;
+        width: 85vw;
         height: auto;
         min-height: 30vh;
         padding: 2%;
         flex-direction: column;
         gap: 1em;
-        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 
         .title{
             font-family: "Ubuntu";
