@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BarcodeFormat } from '@zxing/library';
 import { BehaviorSubject } from 'rxjs';
-import { OrderDictionary } from 'src/shared/models/interfaces/ICheckOut';
 import { ApiService } from 'src/shared/services/api.service';
 
 @Component({
@@ -10,7 +9,7 @@ import { ApiService } from 'src/shared/services/api.service';
   templateUrl: './qr-scan.component.html',
   styleUrls: ['./qr-scan.component.scss']
 })
-export class QrScanComponent {
+export class QrScanComponent implements OnInit {
 
 
   formatsEnabled: BarcodeFormat[] = [
@@ -24,10 +23,10 @@ export class QrScanComponent {
   currentDevice: MediaDeviceInfo | undefined;
 
 
-  hasDevices: boolean =  true;
-  hasPermission: boolean = false;
+  hasDevices =  true;
+  hasPermission = false;
 
-  qrResultString: string= "";
+  qrResultString = "";
 
   torchEnabled = false;
   torchAvailable$ = new BehaviorSubject<boolean>(false);
@@ -42,6 +41,7 @@ export class QrScanComponent {
     const WRONG = document.getElementById("wrong");
     (WRONG as HTMLElement).style.display = "none";
     const TITLE = document.getElementById("title");
+    (TITLE as HTMLElement).innerText = "Scan Order QR";
     (TITLE as HTMLElement).innerText = "";
     if(window.localStorage.getItem("mode") == "1" || window.localStorage.getItem("mode") == "3"){
       (TITLE as HTMLElement).innerText = "Scan SKU QR"
@@ -61,9 +61,10 @@ export class QrScanComponent {
          window.location.href = "./checkin_loc";
       }
       if(window.localStorage.getItem("mode") == "2"){
-        this.apiService.updateInventory(window.localStorage.getItem("checkin_loc")!,window.localStorage.getItem("checkin_sku")!,window.localStorage.getItem("checkin_qty")!,window.localStorage.getItem("checkin_title")!).subscribe(
+        this.apiService.updateInventory(window.localStorage.getItem("checkin_loc") || "",window.localStorage.getItem("checkin_sku") || "" 
+        ,window.localStorage.getItem("checkin_qty") || "",window.localStorage.getItem("checkin_title") || "").subscribe(
           response => {
-            this.apiService.deleteFromCheckIn(window.localStorage.getItem("checkin_loc")!).subscribe(
+            this.apiService.deleteFromCheckIn(window.localStorage.getItem("checkin_loc") || "").subscribe(
               resp => {
                 window.location.href = "./staff-dashboard";
               }
@@ -72,9 +73,9 @@ export class QrScanComponent {
         ); 
       }
       if(window.localStorage.getItem("mode") == "3"){
-        this.apiService.checkOutItem(window.localStorage.getItem("checkout_sku")!,window.localStorage.getItem("checkout_orderid")!).subscribe(
+        this.apiService.checkOutItem(window.localStorage.getItem("checkout_sku") || "",window.localStorage.getItem("checkout_orderid") || "").subscribe(
           data => {
-            this.apiService.updateInventoryAfterCheckout(window.localStorage.getItem("checkout_loc")!,window.localStorage.getItem("checkout_qty")!).subscribe(
+            this.apiService.updateInventoryAfterCheckout(window.localStorage.getItem("checkout_loc") || "",window.localStorage.getItem("checkout_qty") || "").subscribe(
               response => {
                 window.location.reload();
               }
@@ -84,9 +85,9 @@ export class QrScanComponent {
         );
       }
       if(window.localStorage.getItem("mode") == "4"){
-        this.apiService.removeFromCheckout(window.localStorage.getItem("ship_orderid")!).subscribe(
+        this.apiService.removeFromCheckout(window.localStorage.getItem("ship_orderid") || "").subscribe(
           response => {
-            this.apiService.updateOrderStatus(window.localStorage.getItem("ship_orderid")!,"shipped").subscribe(
+            this.apiService.updateOrderStatus(window.localStorage.getItem("ship_orderid") || "","shipped").subscribe(
               resp => {
                 window.location.reload();
               }
@@ -158,7 +159,7 @@ export class QrScanComponent {
   }
 
   onDeviceSelectChange(selected: string) {
-    const device = this.availableDevices!.find(x => x.deviceId === selected);
+    const device = this.availableDevices.find(x => x.deviceId === selected);
     this.currentDevice = device ;
   }
 

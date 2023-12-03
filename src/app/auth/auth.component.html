@@ -1,14 +1,35 @@
 <div class="container">
+   
     <div class="image-holder">
         <img src="../../assets/warehouse.jpg" alt="">
     </div>
     <div class="form-holder">
+        <div class="title">
+            Sign In
+        </div>
+        
         <form  [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-            <label  class="form-label">Username</label>
+            <label for="form-control"  class="form-label">Username</label>
             <input type="text" class="form-control"  placeholder="Type your username" formControlName="username">
-            <label  class="form-label">Password</label>
+            <label for="form-control" class="form-label">Password</label>
             <input type="password" class="form-control"  placeholder="Type your password" formControlName="password">
             <button type="submit" class="btn btn-warning" >Sign In</button>
         </form>
+
+        <div class="subtitle">
+            Don't have an account ?&nbsp; <a href="./register"><span> Register</span></a>
+        </div>
+       
     </div>
+
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div id="modal-body" class="modal-body">
+          ...
+        </div>
+      </div>
+    </div>
+  </div>

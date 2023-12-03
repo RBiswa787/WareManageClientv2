@@ -14,12 +14,14 @@
                 <tr>
                     <td>{{item['sku']}}</td>
                     <td>{{item['location']}}</td>
-                    <td>
+                    <td><img class="qr_icon" src="../../assets/qr-code.png" alt="" (click)="generateQR(item['sku'])"></td>
+                    <td><img class="qr_icon" src="../../assets/qr-scan.png" alt="" (click)="checkIn(item['sku'],item['location'],item['qty'],item['title'])"></td>
+                    <!-- <td>
                     <button type="button" class="btn btn-outline-warning" (click)="generateQR(item['sku'])">Generate</button>
                     </td>
                     <td>
                     <button type="button" class="btn btn-primary"  (click)="checkIn(item['sku'],item['location'],item['qty'],item['title'])">Check In</button>
-                </td>
+                </td> -->
                   </tr>
             </tbody>
           </table>
@@ -50,13 +52,18 @@
                     <td>{{item.sku}}</td>
                     <td>{{item.location}}</td>
                     <td>{{item.qty}}</td>
-                    <td *ngIf="!item.isCheckedOut"><button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" (click)="checkOut(item['sku'],item['location'],item['qty'],item['title'],order.key)">Check Out</button></td>
+                    <td *ngIf="!item.isCheckedOut"><img class="qr_icon" src="../../assets/qr-scan.png" alt=""  data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" (click)="checkOut(item['sku'],item['location'],item['qty'],item['title'],order.key)"></td>
+                    <!-- <td *ngIf="!item.isCheckedOut"><button type="button" class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample" (click)="checkOut(item['sku'],item['location'],item['qty'],item['title'],order.key)">Check Out</button></td> -->
                     <td *ngIf="item.isCheckedOut"><button disabled  type="button" class="btn btn-outline-success" >Complete</button></td>
                   </tr>
                 </tbody>
               </table>
-              <button *ngIf="isReadyToShip(order.key)" type="button" class="btn btn-info"  (click)="shipOrder(order.key)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Ready to Ship</button>
-              <button *ngIf="isReadyToShip(order.key)" type="button" class="btn btn-outline-warning" (click)="generateQR(order.key)" style="margin-left: 3%">Generate</button>
+              <div class="ready">
+                <button *ngIf="isReadyToShip(order.key)" type="button" class="btn btn-info"  (click)="shipOrder(order.key)" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">Ready to Ship</button>
+              <img *ngIf="isReadyToShip(order.key)" class="qr_icon" src="../../assets/qr-code.png" alt="" (click)="generateQR(order.key)">
+              <!-- <button *ngIf="isReadyToShip(order.key)" type="button" class="btn btn-outline-warning" (click)="generateQR(order.key)" style="margin-left: 3%">Generate</button> -->
+              </div>
+              
             </div>
           </div>
         </div>
@@ -64,12 +71,14 @@
   </div>
  
   <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="head"></div>
     <div class="offcanvas-header">
-      <h5 class="offcanvas-title" id="offcanvasExampleLabel">Scan</h5>
+      <h4 class="offcanvas-title" id="offcanvasExampleLabel">Quick Scan</h4>
      
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div id="side-scan" class="offcanvas-body">
       <app-qr-scan></app-qr-scan>
     </div>
+    <div class="footer"></div>
 </div>

@@ -7,7 +7,7 @@ export class TokenInterceptorService implements HttpInterceptor {
  
   constructor() {}
  
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<any>> {
  
     request = request.clone({
       setHeaders: {

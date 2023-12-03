@@ -1,6 +1,5 @@
-import { Component,Input } from '@angular/core';
-import { BarData } from 'src/shared/models/interfaces/IBarData';
-import { BehaviorSubject } from 'rxjs';
+import { Component, OnInit} from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { Chart, registerables } from 'chart.js';
 import { OrderResponse } from 'src/shared/models/interfaces/IOrderResponse';
 import { ApiService } from 'src/shared/services/api.service';
@@ -11,7 +10,8 @@ Chart.register(...registerables);
   templateUrl: './chart-comp-vendor.component.html',
   styleUrls: ['./chart-comp-vendor.component.scss']
 })
-export class ChartCompVendorComponent {
+export class ChartCompVendorComponent implements OnInit {
+  subscriptions: Subscription[] = [];
   orders = new BehaviorSubject<OrderResponse[]>([]);
   purchaseData = new BehaviorSubject<{
       label: string,
@@ -29,14 +29,17 @@ export class ChartCompVendorComponent {
 
   constructor(private apiService: ApiService){}
   ngOnInit(){
-    this.apiService.getAllOrder().subscribe(
-      data => {
+   const order_subscription = this.apiService.getAllOrder().subscribe({
+      next : (data) => {
         this.orders.next(data);
         this.preparePurchaseData(data.filter(obj => obj.partnerType == "vendor"));
       }
+    }
     );
+
+    this.subscriptions.push(order_subscription);
     
-    var myChart = new Chart("chartjs-dashboard-line", {
+    const myChart = new Chart("chartjs-dashboard-line", {
       type: 'bar',
       data: {
         labels: ["Placed","Shipped","Received","Cancelled","Rejected"],
@@ -50,22 +53,25 @@ export class ChartCompVendorComponent {
           }
       }
   });
-  this.purchaseData.subscribe(data => {
+  const purchase_subscription = this.purchaseData.subscribe(data => {
     myChart.data.datasets[0] = data;
     myChart.update();
     console.log(data);
   });
 
+  this.subscriptions.push(purchase_subscription);
+
+  
   }
 
   preparePurchaseData(data : OrderResponse[]){
-    let shipped = data.reduce((count, order) => count + (order.orderStatus == "shipped" ? 1 : 0), 0);
-    let cancelled = data.reduce((count, order) => count + (order.orderStatus == "cancelled" ? 1 : 0), 0);
-    let rejected = data.reduce((count, order) => count + (order.orderStatus == "rejected" ? 1 : 0), 0);
-    let placed = data.reduce((count, order) => count + (order.orderStatus == "placed" ? 1 : 0), 0);
-    let received = data.reduce((count, order) => count + (order.orderStatus == "received" ? 1 : 0), 0);
+    const shipped = data.reduce((count, order) => count + (order.orderStatus == "shipped" ? 1 : 0), 0);
+    const cancelled = data.reduce((count, order) => count + (order.orderStatus == "cancelled" ? 1 : 0), 0);
+    const rejected = data.reduce((count, order) => count + (order.orderStatus == "rejected" ? 1 : 0), 0);
+    const placed = data.reduce((count, order) => count + (order.orderStatus == "placed" ? 1 : 0), 0);
+    const received = data.reduce((count, order) => count + (order.orderStatus == "received" ? 1 : 0), 0);
 
-    let payload = {
+    const payload = {
       label: 'Sales Order Classification',
       data: [placed,shipped,received,cancelled,rejected],
       backgroundColor: [
@@ -89,5 +95,10 @@ export class ChartCompVendorComponent {
    this.purchaseData.next(payload);
    console.log(data);
    
+  }
+
+  onDestroy(){
+    this.subscriptions.forEach( sub => sub.unsubscribe());
+
   }
 }

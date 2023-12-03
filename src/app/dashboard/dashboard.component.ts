@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ApiService } from 'src/shared/services/api.service';
 
 @Component({
@@ -6,7 +7,8 @@ import { ApiService } from 'src/shared/services/api.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
+   subscriptions : Subscription[] = [];
    constructor(private apiService: ApiService){}
 
    ngOnInit(){
@@ -14,8 +16,8 @@ export class DashboardComponent {
       window.location.href = "./";
     }
     const PENDING = document.getElementById("pending");
-    this.apiService.getUnverified().subscribe(
-      (response) => {
+    const unverified_subscription = this.apiService.getUnverified().subscribe({
+      next : (response) => {
         console.log(response);
         response.forEach(item => {
           const CARD = document.createElement("div");
@@ -54,14 +56,23 @@ export class DashboardComponent {
           (PENDING as HTMLElement).appendChild(CARD);
         });
       }
-    );
+     } );
+
+     this.subscriptions.push(unverified_subscription);
    }
 
    onboard(username:string){
-    this.apiService.onboard(username).subscribe(
-      (response) => {
+    const onboard_subscription = this.apiService.onboard(username).subscribe({
+      next : () => {
         window.location.reload();
       }
+    }
     );
+
+    this.subscriptions.push(onboard_subscription);
+   }
+
+   onDestroy(){
+    this.subscriptions.forEach(sub => sub.unsubscribe());
    }
 }

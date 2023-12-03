@@ -1,8 +1,7 @@
 import { CanActivateFn } from '@angular/router';
-import { ApiService } from '../services/api.service';
-import { inject } from '@angular/core';
 
-export const authGuard: CanActivateFn = (route, state) => {
+
+export const authGuard: CanActivateFn = () => {
   if(window.localStorage.getItem("token") != "")
   return true;
   else

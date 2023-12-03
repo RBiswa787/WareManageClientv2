@@ -3,8 +3,8 @@ import { ApiService } from '../services/api.service';
 import { inject } from '@angular/core';
 
 
-export const staffGuard: CanActivateFn = (route, state) => {
-  let payload = inject(ApiService).parseJwt(window.localStorage.getItem("token")!);
+export const staffGuard: CanActivateFn = () => {
+  const payload = inject(ApiService).parseJwt(window.localStorage.getItem("token") || "");
   if((payload['role']) == "staff")
   return true;
   else

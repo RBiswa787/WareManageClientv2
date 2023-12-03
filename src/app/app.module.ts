@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { WebcamModule } from 'ngx-webcam';
 import { LayoutComponent } from './layout/layout.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { QrScanComponent } from './qr-scan/qr-scan.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -26,6 +26,9 @@ import { ReportComponent } from './report/report.component';
 import { ChartCompoComponent } from './chart-compo/chart-compo.component';
 import { ChartCompVendorComponent } from './chart-comp-vendor/chart-comp-vendor.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { TokenInterceptorService } from 'src/shared/services/token-interceptor.service';
+import { ChartStaffComponent } from './chart-staff/chart-staff.component';
+import { ChartVolumneComponent } from './chart-volumne/chart-volumne.component';
 
 
 @NgModule({
@@ -47,7 +50,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     OrderViewComponent,
     ReportComponent,
     ChartCompoComponent,
-    ChartCompVendorComponent
+    ChartCompVendorComponent,
+    ChartStaffComponent,
+    ChartVolumneComponent
   ],
   imports: [
     BrowserModule,
@@ -64,7 +69,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
       registrationStrategy: 'registerWhenStable:30000'
     })
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS ,
+    useClass : TokenInterceptorService,
+    multi : true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

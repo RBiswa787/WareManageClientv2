@@ -17,6 +17,7 @@ import { CheckOut } from '../models/interfaces/ICheckOut';
 })
 export class ApiService {
 
+  storage = new BehaviorSubject<number>(5.2);
   uniqueSuppliers = new BehaviorSubject<string[]>([]);
   scanString : String = "";
   layout = new BehaviorSubject<Layout>({
@@ -46,7 +47,6 @@ export class ApiService {
   }
 
 
-
   getInventoryLayout() : void{
     this.http.get<Layout>(BASE_URL + '/InventoryLayout').subscribe(
       data => {
@@ -58,12 +58,17 @@ export class ApiService {
   getInventory() : void{
     this.http.get<Inventory[]>(BASE_URL + "/Inventory/current").subscribe(
       data => {
+        let count = 0;
         const dictionary = data.reduce((acc : Inventory, item : any) => {
           const location = item.location;
+          if(item.isOccupied){
+            count++;
+          }
           acc[location] = { sku : item.sku, qty : item.qty, isOccupied: item.isOccupied, title: item.title};
           return acc;
         }, {});
         console.log(dictionary);
+        this.storage.next(Number(((count/400)+5).toFixed(2)));
         this.inventory.next(dictionary);
       }
     );
@@ -187,9 +192,9 @@ export class ApiService {
   }
 
   parseJwt (token : string) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 

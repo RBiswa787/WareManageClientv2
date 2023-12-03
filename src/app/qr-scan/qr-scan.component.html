@@ -4,12 +4,14 @@
     <strong>{{ qrResultString }}</strong> -->
 <div class="holder">
     <span id="title">Scan Code</span>
-    <zxing-scanner  [(device)]="currentDevice" (scanSuccess)="onCodeResult($event)"
+    <div class="scan-holder">
+        <zxing-scanner class="zxing" [(device)]="currentDevice" (scanSuccess)="onCodeResult($event)"
     [formats]="formatsEnabled" [tryHarder]="tryHarder" (permissionResponse)="onHasPermission($event)"
     (camerasFound)="onCamerasFound($event)" ></zxing-scanner>
+    </div>
     <span id="scan">
         <strong>{{ qrResultString }}</strong>
     </span>
     <div id="wrong" class="wrong">Wrong SKU</div>
-    <button type="button" id="proceed" class="btn btn-success" (click)="updateScanString()">Proceed</button>
+    <button type="button" id="proceed"  (click)="updateScanString()">Proceed</button>
 </div>

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms'
+import { Component,OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms'
 import { ApiService } from 'src/shared/services/api.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { OrderResponse } from 'src/shared/models/interfaces/IOrderResponse';
 
 @Component({
@@ -9,7 +9,8 @@ import { OrderResponse } from 'src/shared/models/interfaces/IOrderResponse';
   templateUrl: './supplier-dashboard.component.html',
   styleUrls: ['./supplier-dashboard.component.scss']
 })
-export class SupplierDashboardComponent {
+export class SupplierDashboardComponent implements OnInit {
+  subscriptions : Subscription[] = [];
   supplyForm: FormGroup = this.fb.group({});
   orders = new BehaviorSubject<OrderResponse[]>([]);
   order = new BehaviorSubject<OrderResponse>({
@@ -33,14 +34,14 @@ export class SupplierDashboardComponent {
     if(window.localStorage.getItem("role") != "supplier"){
       window.location.href = "./";
     }
-    this.supplierID.next(window.localStorage.getItem("username")!);
+    this.supplierID.next(window.localStorage.getItem("username") || "");
     this.supplyForm = this.fb.group({
       sku: "",
       title: ""
     });
     const HOLDER = document.getElementById("supply-holder");
-    this.apiService.getAllSupplies(window.localStorage.getItem("username")!).subscribe(
-      (response) => {
+    const supply_subscription = this.apiService.getAllSupplies(window.localStorage.getItem("username") || "").subscribe({
+      next : (response) => {
         response.forEach(element => {
           console.log(element);
           const CARD = document.createElement("div");
@@ -59,13 +60,14 @@ export class SupplierDashboardComponent {
           (TITLE as HTMLElement).style.fontFamily = "Ubuntu";
           (TITLE as HTMLElement).style.fontSize = "1em";
 
-          const DELETE = document.createElement("button");
-          DELETE.innerText = "Remove";
-          DELETE.className  ="btn btn-danger";
+          const DELETE = document.createElement("img");
+          (DELETE as HTMLImageElement).src = "../../assets/delete.png";
+          DELETE.style.width = "30px";
+          DELETE.style.aspectRatio = "1/1";
 
-          (DELETE as HTMLButtonElement).addEventListener("click", () => {
+          (DELETE as HTMLImageElement).addEventListener("click", () => {
             this.apiService.deleteSupply(element.sku).subscribe(
-              (response) => {
+              () => {
                 window.location.reload();
               }
             );
@@ -77,23 +79,30 @@ export class SupplierDashboardComponent {
           (HOLDER as HTMLElement).appendChild(CARD);
         });
       }
+    }
     );
 
-    const ORDERS = document.getElementById("orders-holder");
-    this.apiService.getAllOrder().subscribe(
+    this.subscriptions.push(supply_subscription);
+
+
+   const order_subscription =  this.apiService.getAllOrder().subscribe(
       data => {
         this.orders.next(data);
         }
     );
+
+    this.subscriptions.push(order_subscription);
   }
 
   onSubmit(){
-    this.apiService.addSupply(this.supplyForm.value['sku'],this.supplyForm.value['title'],window.localStorage.getItem("username")!).
-    subscribe(
-      (response) => {
+    const add_supply_subscription  = this.apiService.addSupply(this.supplyForm.value['sku'],this.supplyForm.value['title'],window.localStorage.getItem("username") || "").
+    subscribe({
+      next : () => {
         window.location.reload();
-      }
+      }}
     );
+
+    this.subscriptions.push(add_supply_subscription);
   }
 
   currentOrder(order : OrderResponse){
@@ -101,29 +110,40 @@ export class SupplierDashboardComponent {
   }
 
   acceptOrder(order: OrderResponse){
-    this.apiService.updateOrderStatus(order.orderId,"confirmed").subscribe(
-      response => {
+
+   const update_order_subscription =  this.apiService.updateOrderStatus(order.orderId,"confirmed").subscribe({
+      next : () => {
         window.location.reload();
         
       }
+    }
     );
+
+    this.subscriptions.push(update_order_subscription);
   }
 
   dispatchOrder(order: OrderResponse){
-    this.apiService.updateOrderStatus(order.orderId,"shipped").subscribe(
-      response => {
+    const update_order_subscription = this.apiService.updateOrderStatus(order.orderId,"shipped").subscribe({
+      next : () => {
         window.location.reload();
         
-      }
+      }}
     );
+    this.subscriptions.push(update_order_subscription);
   }
 
   rejectOrder(order: OrderResponse){
-    this.apiService.updateOrderStatus(order.orderId,"rejected").subscribe(
-      response => {
+    const update_order_subscription =  this.apiService.updateOrderStatus(order.orderId,"rejected").subscribe({
+      next : () => {
         window.location.reload();
         
       }
+    }
     );
+    this.subscriptions.push(update_order_subscription);
+  }
+
+  onDestroy(){
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 }

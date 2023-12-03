@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Inventory, ReceivedInventory } from 'src/shared/models/interfaces/IInventory';
-import { BehaviorSubject } from 'rxjs';
+import { ReceivedInventory } from 'src/shared/models/interfaces/IInventory';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ApiService } from 'src/shared/services/api.service';
 import { CartItem, OrderResponse } from 'src/shared/models/interfaces/IOrderResponse';
 
@@ -11,6 +11,7 @@ import { CartItem, OrderResponse } from 'src/shared/models/interfaces/IOrderResp
 })
 export class VendorDashboardComponent {
 
+  subscriptions : Subscription[] = [];
   constructor(private apiService: ApiService){}
   sku : ReceivedInventory[] = [
 
@@ -48,30 +49,30 @@ export class VendorDashboardComponent {
       }
     );
 
-    this.vendor.next(window.localStorage.getItem("username")!);
+    this.vendor.next(window.localStorage.getItem("username") || "");
   }
 
   addToCart(item : any){
-    let cart  = this.cart.value;
+    const cart  = this.cart.value;
     cart.push(item);
     this.cart.next(cart);
   }
 
   removeFromCart(sku : string){
-    let cart = this.cart.value;
+    const cart = this.cart.value;
     cart.splice(cart.findIndex(c => c.sku == sku),1);
     this.cart.next(cart);
   }
   isInCart(sku : string){
-    let cart = this.cart.value;
+    const cart = this.cart.value;
     if(cart.findIndex(c => c.sku == sku) != -1)
     return true;
     else
     return false;
   }
   confirmOrder() {
-    this.apiService.placeOrder(window.localStorage.getItem("username")!,JSON.parse(window.localStorage.getItem("vendor_cart")!),"vendor").subscribe(
-      (response) => {
+    this.apiService.placeOrder(window.localStorage.getItem("username") || "",JSON.parse(window.localStorage.getItem("vendor_cart") || ""),"vendor").subscribe(
+      () => {
         window.location.reload();
       },
       (error) => {
@@ -80,13 +81,13 @@ export class VendorDashboardComponent {
     );
   }
   updateCart(sku: string,qty: string, title: string ){
-    let cart = JSON.parse(window.localStorage.getItem("vendor_cart")!);
+    const cart = JSON.parse(window.localStorage.getItem("vendor_cart") || "");
     interface IItem{
       sku : string,
       qty: string,
       title: string
     }
-    let item   : IItem= {
+    const item   : IItem= {
       sku : sku,
       qty : qty,
       title : title
@@ -128,4 +129,7 @@ export class VendorDashboardComponent {
     this.order.next(order);
   }
 
+  onDestroy(){
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
 }

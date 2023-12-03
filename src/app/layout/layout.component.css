@@ -1,15 +1,16 @@
 #holder {
   display: flex;
-  width: 70vw;
+  width: 90vw;
   height: 70vh;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   flex-wrap: wrap;
   padding: 2%;
   gap: 1em;
   margin-top: 1%;
+  border: 1.2px solid #09346a;
 }
 
 #popup {
@@ -43,9 +44,9 @@
   display: flex;
   width: 70vw;
   height: 7vh;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  min-height: 30px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   background-color: white;
-  border-radius: 5%;
   margin-top: 2%;
   justify-content: center;
   align-items: center;

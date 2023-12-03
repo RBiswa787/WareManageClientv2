@@ -23,11 +23,12 @@
                   </tr>
                 </thead>
                 <tbody *ngFor="let order of orders.value">
-                    <tr *ngIf="order.partner == this.supplierID.value && (order.orderStatus == 'placed' || order.orderStatus == 'confirmed')" >
+                    <tr *ngIf="order.partner === this.supplierID.value && (order.orderStatus === 'placed' || order.orderStatus === 'confirmed')" >
                         <td>{{order.orderId}}</td>
                         <td><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#orderModal" (click)="currentOrder(order)">View</button></td>
-                        <td *ngIf="order.orderStatus == 'placed'"><button type="button" class="btn btn-outline-success" (click)="acceptOrder(order)" >Accept</button></td>
-                        <td *ngIf="order.orderStatus == 'confirmed'"><button type="button" class="btn btn-info" (click)="dispatchOrder(order)" >Dispatch</button></td>
+                        <!-- <td><img src="../../assets/show.png" alt=""  data-bs-toggle="modal" data-bs-target="#orderModal"  (click)="currentOrder(order)"style="width:30px;aspect-ratio: 1/1;"></td> -->
+                        <td *ngIf="order.orderStatus === 'placed'"><button type="button" class="btn btn-outline-success" (click)="acceptOrder(order)" >Accept</button></td>
+                        <td *ngIf="order.orderStatus === 'confirmed'"><button type="button" class="btn btn-info" (click)="dispatchOrder(order)" >Dispatch</button></td>
                         <td><button type="button" class="btn btn-outline-danger" (click)="rejectOrder(order)">Reject</button></td>
                     </tr>
                 </tbody>
@@ -42,7 +43,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div id="modal-body" class="modal-body">
-              <label class="form-label"><span style="font-weight: 500;">OrderID :</span> {{order.value.orderId}}</label>
+              <label for="" class="form-label"><span style="font-weight: 500;">OrderID :</span> {{order.value.orderId}}</label>
               <table class="table">
                 <thead>
                   <tr>

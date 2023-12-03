@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Inventory, ReceivedInventory } from 'src/shared/models/interfaces/IInventory';
+import { Component, OnInit } from '@angular/core';
+import { Inventory } from 'src/shared/models/interfaces/IInventory';
 import { ApiService } from 'src/shared/services/api.service';
 
 @Component({
@@ -7,7 +7,7 @@ import { ApiService } from 'src/shared/services/api.service';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit{
     
   zone = 4;
   aisle = 2;
@@ -46,7 +46,7 @@ export class LayoutComponent {
                   for(let l = 0; l < this.shelf; l++){
                    let filled = false;
                    for(let m = 0 ;m < this.bin; m++){
-                    let location = "LOC-"+ String.fromCharCode(65 + i) + "-"+ String(j+1) + "-" + String(k+1) + "-" + String(l+1)+ "-" + String(m+1);
+                    const location = "LOC-"+ String.fromCharCode(65 + i) + "-"+ String(j+1) + "-" + String(k+1) + "-" + String(l+1)+ "-" + String(m+1);
                     if(inventory[location].qty>0){
                       filled = true;
                     }
@@ -74,8 +74,8 @@ export class LayoutComponent {
       if((event.target as HTMLInputElement).id.startsWith("LOC")){
         const popup = document.getElementById("popup");
         (popup as HTMLElement).innerHTML = "";
-        var clickedElement = event.target;
-        var clickedElementRect = (clickedElement as HTMLInputElement).getBoundingClientRect();
+        const clickedElement = event.target;
+        const clickedElementRect = (clickedElement as HTMLInputElement).getBoundingClientRect();
         (popup as HTMLElement).style.left = (clickedElementRect.left + 5) + "px";
         (popup as HTMLElement).style.top = (clickedElementRect.top - 100) + "px";
         (popup as HTMLElement).style.display = "flex";
@@ -117,8 +117,8 @@ export class LayoutComponent {
           (BIN_DIV as HTMLElement).addEventListener("click", (e) => {
             const item_details = document.getElementById("item-details");
             (item_details as HTMLElement).innerHTML = "";
-            var clickElement = event.target;
-            var clickElementRect = (clickElement as HTMLInputElement).getBoundingClientRect();
+            const clickElement = event.target;
+            const clickElementRect = (clickElement as HTMLInputElement).getBoundingClientRect();
             (item_details as HTMLElement).style.left = (clickElementRect.left + 70) + "px";
             (item_details as HTMLElement).style.top = (clickElementRect.top - 100) + "px";
             (item_details as HTMLElement).style.display = "flex";
@@ -187,7 +187,7 @@ export class LayoutComponent {
     for(let i = 0; i < this.zone; i++){
       const ZONE_DIV = document.createElement("div");
       ZONE_DIV.style.display = "flex";
-      ZONE_DIV.style.width = 0.95*(100/parseInt(String(this.zone/2))) + "%";
+      ZONE_DIV.style.width = 0.85*(100/parseInt(String(this.zone/2))) + "%";
       ZONE_DIV.style.height = 0.90*(100/parseInt(String(this.zone/2))) + "%";
       ZONE_DIV.style.border = "1px solid grey";
       ZONE_DIV.style.flexDirection = "column";

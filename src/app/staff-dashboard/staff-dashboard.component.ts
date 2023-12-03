@@ -1,7 +1,7 @@
-import { Component,ViewChild, ChangeDetectorRef } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Component,ViewChild, ChangeDetectorRef, OnInit } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CheckIn } from 'src/shared/models/interfaces/ICheckIn';
-import { CheckOut,OrderDictionary, OrderItem } from 'src/shared/models/interfaces/ICheckOut';
+import { OrderDictionary } from 'src/shared/models/interfaces/ICheckOut';
 import { ApiService } from 'src/shared/services/api.service';
 
 @Component({
@@ -9,7 +9,9 @@ import { ApiService } from 'src/shared/services/api.service';
   templateUrl: './staff-dashboard.component.html',
   styleUrls: ['./staff-dashboard.component.scss']
 })
-export class StaffDashboardComponent {
+export class StaffDashboardComponent implements OnInit {
+
+  subscriptions : Subscription[] = [];
 
   @ViewChild('checkOutModal', { static: false }) checkOutModal : HTMLElement | undefined = undefined;
 
@@ -22,14 +24,16 @@ export class StaffDashboardComponent {
     if(window.localStorage.getItem("role") != "staff"){
       window.location.href = "./";
     }
-    this.apiService.getAllCheckIn().subscribe(
+    const checkInSubscription = this.apiService.getAllCheckIn().subscribe(
       data => {
        this.checkin_items.next(data);
       }
     );
-    this.apiService.getAllCheckOut().subscribe(
+
+    this.subscriptions.push(checkInSubscription);
+    const checkOutSubscription = this.apiService.getAllCheckOut().subscribe(
       data => {
-       var projectedData: OrderDictionary = {};
+       const projectedData: OrderDictionary = {};
        data.forEach(obj => {
           const {sku, qty, title, location, isCheckedOut} = obj;
          
@@ -44,10 +48,13 @@ export class StaffDashboardComponent {
       }
       
     );
+
+    this.subscriptions.push(checkOutSubscription);
     
   }
 
   generateQR(sku : string){
+    window.localStorage.setItem("mode","4");
     window.location.href = "/test?query="+sku;
   }
 
@@ -92,6 +99,10 @@ export class StaffDashboardComponent {
     window.localStorage.setItem("ship_orderid",orderid);
     window.localStorage.setItem("mode","4");
     this.apiService.toggle.next(!this.apiService.toggle.value);
+  }
+
+  onDestroy(){
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
  
 }
